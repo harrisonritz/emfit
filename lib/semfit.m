@@ -1,8 +1,9 @@
-function [E,V,alpha,stats,bf,fitparams] = emfit(llfunc,D,Np,varargin);
+function [E,V,alpha,stats,bf,fitparams] = semfit(llfunc,D,Np,varargin);
 %
-% [E,V,alpha,stats,bf,fitparams] = EMFIT(llfunc,D,Np,[reg],[Nsample],[docheckgrad],[nograd],[maxit],[dofull],[savestr],[loadstr]);
+% [E,V,alpha,stats,bf,fitparams] = SEMFIT(llfunc,D,Np,[reg],[Nsample],[docheckgrad],[nograd],[maxit],[dofull],[savestr],[loadstr]);
 %
 % Perform a random-effects fit using expectation-maximimization.
+% Serial for debugging.
 %
 % NOTE: This is in development. The error bars around the group mean are only
 % correct for small models with few parameters, not for larger ones.
@@ -193,8 +194,8 @@ while 1;emit=emit+1; t0=tic;
     end
     
     
-    % .......................... main loop over subjects
-    parfor sj=sjind_pf; tt0=tic;
+    % .......................... main loop over subjects [SERIAL]
+    for sj=sjind_pf; tt0=tic;
         
         sk = mod(sj-1,Nsj)+1; 							% current subject
         rs = ceil(sj/Nsj);								% current restart for that subject
